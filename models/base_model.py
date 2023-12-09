@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 import uuid
 from datetime import datetime
+from models import storage
+
 """
 BaseModel - a class that defines all common
 attributes/methods for other classes.
@@ -36,11 +38,13 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
 
     def save(self):
         """ save - updates the public instance attribute
             updated_at with the current datetime"""
         updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """ to_dict - returns a dictionary containing
