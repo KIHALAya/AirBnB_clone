@@ -23,8 +23,14 @@ class FileStorage:
                 for key, obj_dict in data.items():
                     class_name, obj_id = key.split('.')
                     obj_dict['__class__'] = class_name
-                    from models.base_model import BaseModel  # Import BaseModel here to avoid circular import
-                    obj = BaseModel(**obj_dict)
+                    if class_name == 'BaseModel':
+                        from models.base_model import BaseModel
+                        obj = BaseModel(**obj_dict)
+                    elif class_name == 'User':
+                        from models.user import User
+                        obj = User(**obj_dict)
+                    else:
+                        continue
                     FileStorage.__objects[key] = obj
         except FileNotFoundError:
             pass
